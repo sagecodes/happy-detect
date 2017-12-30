@@ -11,6 +11,9 @@ def detect(gray, frame):
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2) 
         roi_gray = gray[y:y+h, x:x+w] 
         roi_color = frame[y:y+h, x:x+w]
+        smiles = smile_cascade.detectMultiScale(roi_gray, 1.1, 3)
+        for (sx, sy, sw, sh) in smiles:
+            cv2.rectangle(roi_color,(sx, sy),(sx+sw, sy+sh), (0, 255, 0), 2)
     return frame
 
 # open webcam for video capture | try changing 0 to 1 for external webcam
