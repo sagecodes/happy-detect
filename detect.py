@@ -5,13 +5,15 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 smile_cascade = cv2.CascadeClassifier('haarcascade_smile.xml')
 
 # Detect face and draw rectangle around region of interest in original image
+# you may need to adjust scaling factor and minimum num of neighbors
+# depending on your camera setup for accurate smile detection
 def detect(gray, frame):
     faces = face_cascade.detectMultiScale(gray, 1.3, 5) 
     for (x, y, w, h) in faces:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2) 
         roi_gray = gray[y:y+h, x:x+w] 
         roi_color = frame[y:y+h, x:x+w]
-        smiles = smile_cascade.detectMultiScale(roi_gray, 1.1, 3)
+        smiles = smile_cascade.detectMultiScale(roi_gray, 1.7, 23)
         for (sx, sy, sw, sh) in smiles:
             cv2.rectangle(roi_color,(sx, sy),(sx+sw, sy+sh), (0, 255, 0), 2)
     return frame
